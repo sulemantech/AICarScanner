@@ -1,82 +1,65 @@
-import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import React from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { AlertBanner } from '../../components/ui/AlertBanner';
 import { BottomNav } from '../../components/ui/BottomNav';
 import { ScreenHeader } from '../../components/ui/ScreenHeader';
 import { ComponentCard } from '../../components/vehicle/ComponentCard';
-import { HealthScore } from '../../components/vehicle/HealthScore';
 import { useTheme } from '../../constants/ThemeContext';
 
-export default function DashboardScreen() {
+export default function ResultsScreen() {
   const { colors } = useTheme();
 
-  const handleComponentPress = (component: string) => {
-    if (component === 'BRAKES') {
-      router.push('/issue-details');
-    }
-  };
-
   return (
-     <SafeAreaView style={[styles.container, { backgroundColor: colors.bgBody }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.bgBody }]}>
     <View style={[styles.container, { backgroundColor: colors.bgBody }]}>
       <View style={[styles.screen, { backgroundColor: colors.screenBg }]}>
         {/* Removed StatusBar - using device's native status bar */}
-        <ScreenHeader title="DASHBOARD" showBack={false} />
+        <ScreenHeader title="SCAN RESULTS" />
 
         <ScrollView 
           style={styles.content} 
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.contentContainer}
         >
-          <HealthScore score={82} lastScan="10:23" />
-
-          <AlertBanner 
-            count={3}
-            systems={['Battery', 'Brakes', 'TPMS']}
-            onPress={() => router.push('/(tabs)/alerts')}
-          />
+          <View style={[styles.summaryCard, { 
+            backgroundColor: colors.cardBg,
+            borderColor: colors.borderPrimary 
+          }]}>
+            <Text style={[styles.summaryText, { color: colors.textSecondary }]}>
+              Issues Found: <Text style={[styles.bold, { color: colors.textPrimary }]}>2</Text>
+            </Text>
+            <Text style={[styles.summaryText, { color: colors.textSecondary }]}>
+              Systems Checked: <Text style={[styles.bold, { color: colors.textPrimary }]}>12</Text>
+            </Text>
+            <Text style={[styles.summaryText, { color: colors.textSecondary }]}>
+              Critical Issues: <Text style={[styles.bold, { color: colors.accentGreen }]}>0</Text>
+            </Text>
+          </View>
 
           <Text style={[styles.sectionTitle, { color: colors.textPrimary }]}>
             SYSTEM STATUS
           </Text>
 
           <View style={styles.grid}>
-            <ComponentCard 
-              name="ENGINE" 
-              status="good" 
-              value="98%"
-              onPress={() => handleComponentPress('ENGINE')}
-            />
+            <ComponentCard name="ENGINE" status="good" />
             <ComponentCard 
               name="BRAKES" 
               status="warning" 
-              value="40%"
-              onPress={() => handleComponentPress('BRAKES')}
+              onPress={() => router.push('/issue-details')}
             />
-            <ComponentCard 
-              name="BATTERY" 
-              status="good" 
-              value="12.4V"
-              onPress={() => handleComponentPress('BATTERY')}
-            />
-            <ComponentCard 
-              name="TRANSMISSION" 
-              status="good"
-              onPress={() => handleComponentPress('TRANSMISSION')}
-            />
+            <ComponentCard name="BATTERY" status="good" />
+            <ComponentCard name="TRANSMISSION" status="good" />
+            <ComponentCard name="SENSORS" status="warning" />
           </View>
 
           <TouchableOpacity 
             style={[styles.primaryButton, { borderColor: colors.borderPrimary }]}
-            onPress={() => router.push('/(tabs)/scan')}
+            onPress={() => router.push('/(tabs)/alerts')}
           >
-            <Ionicons name="search" size={18} color={colors.borderPrimary} />
             <Text style={[styles.primaryButtonText, { color: colors.borderPrimary }]}>
-              START DIAGNOSTIC
+              VIEW RECOMMENDATIONS
             </Text>
           </TouchableOpacity>
         </ScrollView>
@@ -104,24 +87,33 @@ const styles = StyleSheet.create({
     padding: 24,
     paddingBottom: 30,
   },
+  summaryCard: {
+    borderRadius: 24,
+    padding: 20,
+    borderWidth: 1,
+    marginBottom: 24,
+  },
+  summaryText: {
+    fontSize: 16,
+    marginVertical: 4,
+  },
+  bold: {
+    fontWeight: '700',
+  },
   sectionTitle: {
     fontSize: 18,
     fontWeight: '700',
-    marginTop: 16,
-    marginBottom: 12,
+    marginBottom: 16,
     letterSpacing: 1,
   },
   grid: {
     gap: 14,
   },
   primaryButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 10,
     borderWidth: 2,
     borderRadius: 60,
     padding: 18,
+    alignItems: 'center',
     marginTop: 30,
     marginBottom: 20,
   },
