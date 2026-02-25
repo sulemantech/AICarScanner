@@ -2,19 +2,18 @@ import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import React from 'react';
 import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-
 import { SafeAreaView } from 'react-native-safe-area-context';
+
 import { BottomNav } from '../../components/ui/BottomNav';
 import { ScreenHeader } from '../../components/ui/ScreenHeader';
 import { useTheme } from '../../constants/ThemeContext';
+
 export default function ProfileScreen() {
-  const { colors } = useTheme();
+  const { colors, theme, toggleTheme, isDark } = useTheme();
 
   return (
-     <SafeAreaView style={[styles.container, { backgroundColor: colors.bgBody }]}>
-    <View style={[styles.container, { backgroundColor: colors.bgBody }]}>
+    <SafeAreaView style={[styles.container, { backgroundColor: colors.bgBody }]}>
       <View style={[styles.screen, { backgroundColor: colors.screenBg }]}>
-        {/* Removed StatusBar - using device's native status bar */}
         <ScreenHeader title="PROFILE" />
 
         <ScrollView 
@@ -22,6 +21,7 @@ export default function ProfileScreen() {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.contentContainer}
         >
+          {/* Profile Header */}
           <View style={styles.profileHeader}>
             <View style={[styles.avatar, { 
               backgroundColor: colors.cardBg,
@@ -39,6 +39,40 @@ export default function ProfileScreen() {
             </View>
           </View>
 
+          {/* Theme Toggle Card */}
+          <TouchableOpacity 
+            style={[styles.themeCard, { 
+              backgroundColor: colors.cardBg,
+              borderColor: colors.borderPrimary 
+            }]}
+            onPress={toggleTheme}
+            activeOpacity={0.7}
+          >
+            <View style={styles.themeCardContent}>
+              <View style={styles.themeIconContainer}>
+                <Ionicons 
+                  name={isDark ? "moon" : "sunny"} 
+                  size={24} 
+                  color={colors.borderPrimary} 
+                />
+              </View>
+              <View style={styles.themeTextContainer}>
+                <Text style={[styles.themeTitle, { color: colors.textPrimary }]}>
+                  Theme Mode
+                </Text>
+                <Text style={[styles.themeSubtitle, { color: colors.textSecondary }]}>
+                  Tap to switch to {isDark ? 'light' : 'dark'} mode
+                </Text>
+              </View>
+              <View style={[styles.themeBadge, { backgroundColor: colors.borderPrimary }]}>
+                <Text style={styles.themeBadgeText}>
+                  {isDark ? 'DARK' : 'LIGHT'}
+                </Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+
+          {/* Settings List */}
           <View style={styles.settingsList}>
             <TouchableOpacity style={[styles.settingItem, { 
               backgroundColor: colors.cardBg,
@@ -91,6 +125,7 @@ export default function ProfileScreen() {
             </TouchableOpacity>
           </View>
 
+          {/* Sign Out Button */}
           <TouchableOpacity 
             style={[styles.outlineButton, { borderColor: colors.accentGreen }]}
             onPress={() => router.push('/')}
@@ -103,7 +138,6 @@ export default function ProfileScreen() {
 
         <BottomNav />
       </View>
-    </View>
     </SafeAreaView>
   );
 }
@@ -146,9 +180,51 @@ const styles = StyleSheet.create({
   userEmail: {
     fontSize: 15,
   },
+  // Theme Card Styles
+  themeCard: {
+    borderRadius: 24,
+    borderWidth: 1,
+    padding: 16,
+    marginBottom: 16,
+  },
+  themeCardContent: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 16,
+  },
+  themeIconContainer: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    backgroundColor: 'rgba(108, 92, 231, 0.1)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  themeTextContainer: {
+    flex: 1,
+  },
+  themeTitle: {
+    fontSize: 16,
+    fontWeight: '700',
+    marginBottom: 4,
+  },
+  themeSubtitle: {
+    fontSize: 13,
+  },
+  themeBadge: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 20,
+  },
+  themeBadgeText: {
+    color: '#FFFFFF',
+    fontSize: 12,
+    fontWeight: '700',
+    letterSpacing: 0.5,
+  },
   settingsList: {
     gap: 14,
-    marginVertical: 24,
+    marginVertical: 16,
   },
   settingItem: {
     flexDirection: 'row',

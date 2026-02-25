@@ -79,6 +79,15 @@ export default function DashboardScreen() {
               START DIAGNOSTIC
             </Text>
           </TouchableOpacity>
+          <TouchableOpacity 
+  style={[styles.primaryButton, { borderColor: colors.borderPrimary }]}
+  onPress={() => router.push('/(tabs)/diagnostics')} // ← Now goes to Diagnostics
+>
+  <Ionicons name="search" size={18} color={colors.borderPrimary} />
+  <Text style={[styles.primaryButtonText, { color: colors.borderPrimary }]}>
+    VIEW DTC CODES
+  </Text>
+</TouchableOpacity>
         </ScrollView>
 
         <BottomNav />
