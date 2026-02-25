@@ -1,5 +1,14 @@
 // services/DTCDatabase.ts
 import {
+    B00XX_DTCS,
+    B01XX_DTCS,
+    B02XX_DTCS,
+    B03XX_DTCS,
+    B04XX_B1XXX_DTCS,
+    C00XX_DTCS,
+    C01XX_DTCS,
+    C02XX_DTCS,
+    C03XX_DTCS,
     P00XX_DTCS,
     P01XX_DTCS,
     P02XX_DTCS,
@@ -25,19 +34,10 @@ import {
     U01XX_DTCS,
     U02XX_DTCS,
     U03XX_DTCS,
-    U04XX_DTCS,
-    C00XX_DTCS,
-    C01XX_DTCS,
-    C02XX_DTCS,
-    C03XX_DTCS,
-    B00XX_DTCS,
-    B01XX_DTCS,
-    B02XX_DTCS,
-    B03XX_DTCS,
-    B04XX_B1XXX_DTCS
+    U04XX_DTCS
 } from '../constants/dtc';
 
-import { DTC, DTCDefinition, SystemRange, SystemType, DTCRepairInfo } from '../types/dtc.types';
+import { DTC, DTCDefinition, DTCRepairInfo, SystemRange, SystemType } from '../types/dtc.types';
 
 // Combine all DTCs
 export const ALL_DTCS: DTC[] = [
@@ -432,7 +432,7 @@ export const getRepairInfo = (code: string): DTCRepairInfo => {
             },
             priority: 'Low - No immediate driveability concerns',
             diyPossibility: 'Yes - Start with gas cap',
-            professionalRequired: 'For smoke testing if gas cap doesn't fix it'
+            professionalRequired: 'For smoke testing if gas cap doesn\'t fix it'  // ← Fixed: escaped apostrophe
         },
         'P0455': {
             symptoms: [

@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "AICarScanner",
-    "slug": "AICarScanner",
+    "name": "AI Car Scanner",
+    "slug": "ai-car-scanner",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -19,7 +19,8 @@
         "monochromeImage": "./assets/images/android-icon-monochrome.png"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.sulman.AICarScanner"
     },
     "web": {
       "output": "static",
@@ -38,7 +39,10 @@
             "backgroundColor": "#000000"
           }
         }
-      ]
+      ],
+      "expo-font",
+      "expo-web-browser",
+      "react-native-ble-plx"
     ],
     "experiments": {
       "typedRoutes": true,
