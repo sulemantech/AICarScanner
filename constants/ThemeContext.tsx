@@ -1,6 +1,6 @@
-import React, { createContext, useState, useContext, useEffect, ReactNode } from 'react';
+import * as SecureStore from 'expo-secure-store';
+import React, { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { Colors, ColorScheme } from './Colors';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Define the context type
 interface ThemeContextType {
@@ -18,6 +18,8 @@ interface ThemeProviderProps {
   children: ReactNode;
 }
 
+const THEME_STORAGE_KEY = 'theme';
+
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [theme, setTheme] = useState<ColorScheme>('dark');
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -28,7 +30,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
 
   const loadTheme = async (): Promise<void> => {
     try {
-      const savedTheme = await AsyncStorage.getItem('theme');
+      const savedTheme = await SecureStore.getItemAsync(THEME_STORAGE_KEY);
       if (savedTheme === 'light' || savedTheme === 'dark') {
         setTheme(savedTheme);
       }
@@ -43,7 +45,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     const newTheme = theme === 'dark' ? 'light' : 'dark';
     setTheme(newTheme);
     try {
-      await AsyncStorage.setItem('theme', newTheme);
+      await SecureStore.setItemAsync(THEME_STORAGE_KEY, newTheme);
     } catch (error) {
       console.error('Failed to save theme:', error);
     }

@@ -1,7 +1,6 @@
-import { Ionicons } from '@expo/vector-icons';
 import { router } from 'expo-router';
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 import { useTheme } from '../constants/ThemeContext';
 
@@ -26,7 +25,12 @@ export default function WelcomeScreen() {
             backgroundColor: colors.cardBg,
             borderColor: colors.borderPrimary 
           }]}>
-            <Ionicons name="car-sport" size={72} color={colors.borderPrimary} />
+            {/* <Ionicons name="car-sport" size={72} color={colors.borderPrimary} /> */}
+             <Image 
+              source={require('../assets/images/welcome-car.png')}
+              style={styles.carImage}
+              resizeMode="contain"
+            />
           </View>
 
           <Text style={[styles.mainTitle, { color: colors.textPrimary }]}>
@@ -100,6 +104,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderWidth: 1,
     marginBottom: 20,
+  },
+   carImage: {
+    width: '80%',
+    height: '80%',
   },
   mainTitle: {
     fontSize: 32,

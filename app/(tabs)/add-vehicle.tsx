@@ -124,6 +124,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 18,
     fontWeight: '700',
+    fontFamily: 'Rajdhani',
     marginBottom: 4,
     letterSpacing: 1,
   },

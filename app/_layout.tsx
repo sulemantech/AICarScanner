@@ -35,29 +35,34 @@ function RootLayoutNav() {
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
-    'Orbitron': require('../assets/fonts/Orbitron-Regular.ttf'),
-    'Orbitron-Bold': require('../assets/fonts/Orbitron-Bold.ttf'),
     'Orbitron-Regular': require('../assets/fonts/Orbitron-Regular.ttf'),
+    'Orbitron': require('../assets/fonts/Orbitron-Bold.ttf'),
     'Rajdhani-Medium': require('../assets/fonts/Rajdhani-Medium.ttf'),
-    'Rajdhani-Light': require('../assets/fonts/Rajdhani-Light.ttf'),
+    'Rajdhani-Regular': require('../assets/fonts/Rajdhani-Regular.ttf'),
+    'Rajdhani': require('../assets/fonts/Rajdhani-Bold.ttf'),
+    // Avoid duplicates or extra requirements if possible
   });
 
-  // Catch errors during font loading
   useEffect(() => {
-    if (error) {
-      console.error("Font Loading Error:", error);
-    }
-  }, [error]);
+    // 1. Safety Timeout: If nothing happens in 5 seconds, hide the splash anyway
+    const timeout = setTimeout(() => {
+      SplashScreen.hideAsync().catch(() => {});
+    }, 5000);
 
-  useEffect(() => {
+    // 2. Hide when ready
     if (loaded || error) {
-      SplashScreen.hideAsync();
+      SplashScreen.hideAsync()
+        .then(() => clearTimeout(timeout))
+        .catch((e) => console.warn(e));
     }
+
+    return () => clearTimeout(timeout);
   }, [loaded, error]);
 
-  // If fonts aren't loaded and there's no error yet, keep showing Splash
+  // IMPORTANT: Don't return null if there's an error. 
+  // Show the UI so you can at least see a potential RedBox or Error.
   if (!loaded && !error) {
-    return null;
+    return null; 
   }
 
   return (
